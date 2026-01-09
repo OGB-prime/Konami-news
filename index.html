@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Konami eFootball News</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0b0b0b;
+  color: #fff;
+}
+
+header {
+  background: #111;
+  padding: 20px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  border-bottom: 3px solid #00ffcc;
+}
+
+.news {
+  max-width: 900px;
+  margin: auto;
+  padding: 15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 15px;
+}
+
+.card {
+  background: #161616;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  background: #222;
+}
+
+.content {
+  padding: 12px;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.date {
+  font-size: 12px;
+  color: #aaa;
+  margin: 6px 0;
+}
+
+.summary {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+a {
+  color: #00ffcc;
+  text-decoration: none;
+  font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<header>KONAMI / eFOOTBALL NEWS</header>
+
+<div class="news" id="news">
+Loading news...
+</div>
+
+<script>
+fetch("news.json")
+  .then(res => res.json())
+  .then(data => {
+    const box = document.getElementById("news");
+    box.innerHTML = "";
+
+    data.reverse().forEach(n => {
+      box.innerHTML += `
+        <div class="card">
+          <img src="${n.image}" onerror="this.src='https://via.placeholder.com/400x200?text=eFootball'">
+          <div class="content">
+            <div class="title">${n.title}</div>
+            <div class="date">${n.date}</div>
+            <div class="summary">${n.summary}</div>
+            <a href="${n.link}" target="_blank">Read more →</a>
+          </div>
+        </div>
+      `;
+    });
+  })
+  .catch(() => {
+    document.getElementById("news").innerHTML = "Failed to load news.";
+  });
+</script>
+
+</body>
+</html>
